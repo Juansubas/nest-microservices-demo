@@ -1,26 +1,41 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, OnModuleInit } from '@nestjs/common';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
+import { PrismaClient } from '@prisma/client';
+import { RpcException } from '@nestjs/microservices';
 
 @Injectable()
-export class OrdersService {
-  create(createOrderDto: CreateOrderDto) {
-    return 'This action adds a new order';
+export class OrdersService extends PrismaClient implements OnModuleInit {
+  async create(createOrderDto: CreateOrderDto) {
+    try {
+      return await this.order.create({
+        data: createOrderDto,
+      });
+    } catch (error) {
+      throw new RpcException({
+        status: 400,
+        message: error.message,
+      });
+    }
   }
 
-  findAll() {
-    return `This action returns all orders`;
+  async onModuleInit() {
+    await this.$connect();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} order`;
+  async findAll(userId: string) {
+    return await this.order.findMany({
+      where: { userId },
+    });
   }
 
-  update(id: number, updateOrderDto: UpdateOrderDto) {
-    return `This action updates a #${id} order`;
+  async update(orderId: string, updateOrderDto: UpdateOrderDto) {
+    const { orderId: _, ...data } = updateOrderDto; // Eliminar orderId de los datos
+  
+    return await this.order.update({
+      where: { id: orderId },
+      data
+    });
   }
-
-  remove(id: number) {
-    return `This action removes a #${id} order`;
-  }
+  
 }

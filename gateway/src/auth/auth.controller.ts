@@ -12,10 +12,12 @@ import { AuthGuard } from './auth.guard';
 import { NATS_SERVICE } from 'src/config';
 import { ClientProxy, RpcException } from '@nestjs/microservices';
 import { catchError } from 'rxjs';
-import { User } from './decorators/user.decorator';
-import { Token } from './decorators/token.decorator';
+import { User } from '../common/decorators/user.decorator';
 import { User as IUser } from './entities/auth.entity';
+import { Token } from 'src/common/decorators/token.decorator';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('auth')
 @Controller('auth')
 export class AuthController {
   constructor(@Inject(NATS_SERVICE) private readonly client: ClientProxy) {}
@@ -40,6 +42,7 @@ export class AuthController {
       );
   }
 
+  @ApiBearerAuth()
   @UseGuards(AuthGuard)
   @Get('verify')
   verify(@User() user: IUser, @Token() token: string) {

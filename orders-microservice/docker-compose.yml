@@ -1,0 +1,15 @@
+services:
+  auth-ms-db:
+    container_name: order-ms
+    image: postgres:12-alpine
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=1234
+      - POSTGRES_DB=order
+    volumes:
+      - postgres_data_order:/var/lib/postgresql/data
+    ports:
+      - 5434:5432
+
+volumes:
+  postgres_data_order:
