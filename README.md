@@ -56,7 +56,7 @@ La comunicación entre microservicios se realiza a través de **NATS** como brok
 
 - **Framework:** NestJS
 - **Base de Datos:** PostgreSQL con Prisma
-- **Mensajería:** NATS (o RabbitMQ/Kafka según configuración)
+- **Mensajería:** NATS 
 - **Contenedores:** Docker (con Dockerfile y docker-compose.yml)
 - **Documentación API:** Swagger
 - **Buenas Prácticas:** Principios SOLID y uso de DTOs
@@ -214,6 +214,7 @@ services:
 
 ## Documentación API (Swagger)
 
+Recuerda localhost:3000 es tu host.
 - **Interfaz Web:** Accede en http://localhost:3000/swagger
 - **JSON de Swagger:** Descarga desde http://localhost:3000/swagger/json
 
@@ -253,7 +254,3 @@ docker compose up -d
 # En cada proyecto (auth, orders, gateway):
 npm run start:dev
 ```
-
-### Usar Swagger
-Accede a la documentación interactiva en http://localhost:3000/swagger.
-http://localhost:3000/swagger/json para descargar el JSON de Swagger.
