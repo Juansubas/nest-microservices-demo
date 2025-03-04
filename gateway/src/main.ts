@@ -26,7 +26,9 @@ async function main() {
     .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup("api", app, document);
+  SwaggerModule.setup("swagger", app, document,  {
+    jsonDocumentUrl: 'swagger/json',
+  });
 
   await app.listen(EnvironmentVariables.port);
   logger.log(`Gateway is running on port ${EnvironmentVariables.port}`)
